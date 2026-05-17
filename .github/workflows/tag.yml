@@ -1,0 +1,17 @@
+name: Auto-tag
+
+# On push to main, read the workspace version from Cargo.toml and tag
+# the commit as `v<X.Y.Z>` if no such tag exists yet. The `Release`
+# workflow listens for `v*` tag pushes and runs `cargo publish`.
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  tag:
+    uses: brefwiz/shared-ci-workflows/.github/workflows/auto-tag.yml@main
+    secrets:
+      release-token: ${{ secrets.RELEASE_TOKEN }}
