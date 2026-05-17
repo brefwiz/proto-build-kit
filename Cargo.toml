@@ -1,0 +1,52 @@
+[package]
+name = "proto-build-kit"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+authors = ["Gregoire Salingue"]
+description = "Generic build-helper primitives for proto-source services: stage embedded .proto bytes to a protoc-relative tempdir, compile via protox, extract MethodOptions extension values, and drive tonic-prost-build with type_attribute injection."
+license = "MIT"
+repository = "https://github.com/brefwiz/proto-build-kit"
+documentation = "https://docs.rs/proto-build-kit"
+readme = "README.md"
+keywords = ["protobuf", "buf", "tonic", "connectrpc", "build-script"]
+categories = ["development-tools::build-utils"]
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+# Pure-Rust .proto → FileDescriptorSet (no protoc subprocess).
+protox = "0.9"
+
+# Read MethodOptions extension VALUES (FDS encode drops them; pool preserves).
+prost            = "0.14"
+prost-types      = "0.14"
+prost-reflect    = "0.16"
+
+# Optional codegen wrapper around tonic-prost-build.
+tonic-build       = { version = "0.14", optional = true }
+tonic-prost-build = { version = "0.14", optional = true }
+
+# Tempdir staging.
+tempfile = "3"
+
+# Concrete error type.
+thiserror = "2"
+
+[features]
+default = ["tonic"]
+# Expose the `tonic-prost-build` wrapper. Disable if you drive your own
+# codegen (e.g. connectrpc-build) and only want stage / compile / extract.
+tonic = ["dep:tonic-build", "dep:tonic-prost-build"]
+
+[lints.rust]
+warnings    = "deny"
+unsafe_code = "deny"
+
+[lints.clippy]
+all      = { level = "deny", priority = -1 }
+pedantic = { level = "deny", priority = -1 }
+
+[dev-dependencies]
+prost-types = "0.14"
