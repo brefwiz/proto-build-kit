@@ -24,3 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - 8 unit tests across the four modules.
 - 1 end-to-end test (`end_to_end_envelope_annotation_pipeline`) that drives a fake `.proto` schema through every primitive and asserts the generated Rust contains the injected `#[fake_envelope(...)]` attribute on the expected struct and no others.
+
+### Examples
+
+- `examples/stage_compile.rs` — stages an embedded `.proto`, compiles via `protox`, walks the descriptor pool to print services + methods.
+- `examples/extract_annotations.rs` — declares a custom `MethodOptions` extension, applies it on a service, extracts the per-response annotation map.
+
+### Documentation
+
+- `README.md` covering the four primitives, the `*-protos` crate pattern, annotation-driven codegen, and a "when to use / when not" guide.
